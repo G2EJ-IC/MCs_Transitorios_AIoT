@@ -19,15 +19,18 @@ static void touch_read_cb_AIoT(lv_indev_t *indev, lv_indev_data_t *data)
 
     // Leer datos crudos del controlador
     esp_lcd_touch_read_data(tp_handle_AIoT);
-    
+
     // Obtener coordenadas procesadas (calibradas y promediadas por el driver)
     bool pressed = esp_lcd_touch_get_coordinates(tp_handle_AIoT, touch_x, touch_y, touch_strength, &touch_cnt, 1);
 
-    if (pressed && touch_cnt > 0) {
+    if (pressed && touch_cnt > 0)
+    {
         data->point.x = touch_x;
         data->point.y = touch_y;
         data->state = LV_INDEV_STATE_PRESSED;
-    } else {
+    }
+    else
+    {
         data->state = LV_INDEV_STATE_RELEASED;
     }
 }
@@ -36,12 +39,12 @@ void Input_AIoT_Init(void)
 {
     // 1. Inicializar Bus SPI (Host SPI2)
     spi_bus_config_t bus_cfg = {
-       .mosi_io_num = AIOT_PIN_NUM_TOUCH_MOSI,
-       .miso_io_num = AIOT_PIN_NUM_TOUCH_MISO,
-       .sclk_io_num = AIOT_PIN_NUM_TOUCH_CLK,
-       .quadwp_io_num = -1,
-       .quadhd_io_num = -1,
-       .max_transfer_sz = 0, // Transferencia máxima por defecto
+        .mosi_io_num = AIOT_PIN_NUM_TOUCH_MOSI,
+        .miso_io_num = AIOT_PIN_NUM_TOUCH_MISO,
+        .sclk_io_num = AIOT_PIN_NUM_TOUCH_CLK,
+        .quadwp_io_num = -1,
+        .quadhd_io_num = -1,
+        .max_transfer_sz = 0, // Transferencia máxima por defecto
     };
     // Inicializar bus SPI con DMA habilitado
     ESP_ERROR_CHECK(spi_bus_initialize(AIOT_TOUCH_SPI_HOST, &bus_cfg, SPI_DMA_CH_AUTO));
@@ -53,18 +56,18 @@ void Input_AIoT_Init(void)
 
     // 3. Crear Instancia del Driver Táctil
     esp_lcd_touch_config_t tp_cfg = {
-       .x_max = AIOT_LCD_H_RES,
-       .y_max = AIOT_LCD_V_RES,
-       .rst_gpio_num = -1,
-       .int_gpio_num = AIOT_PIN_NUM_TOUCH_IRQ,
-       .levels = {
-           .reset = 0,
-           .interrupt = 0, // XPT2046 interrupción es activa baja
+        .x_max = AIOT_LCD_H_RES,
+        .y_max = AIOT_LCD_V_RES,
+        .rst_gpio_num = -1,
+        .int_gpio_num = AIOT_PIN_NUM_TOUCH_IRQ,
+        .levels = {
+            .reset = 0,
+            .interrupt = 0, // XPT2046 interrupción es activa baja
         },
-       .flags = {
-           .swap_xy = 0,  // Depende de la orientación física del digitalizador
-           .mirror_x = 1, // Comúnmente necesario en CrowPanel
-           .mirror_y = 1,
+        .flags = {
+            .swap_xy = 0,  // Depende de la orientación física del digitalizador
+            .mirror_x = 1, // Comúnmente necesario en CrowPanel
+            .mirror_y = 1,
         },
     };
     ESP_ERROR_CHECK(esp_lcd_touch_new_spi_xpt2046(tp_io_handle, &tp_cfg, &tp_handle_AIoT));

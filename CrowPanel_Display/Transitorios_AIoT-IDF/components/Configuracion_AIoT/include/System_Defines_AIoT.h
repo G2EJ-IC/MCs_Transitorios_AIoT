@@ -1,3 +1,6 @@
+#ifndef __SYSTEM_DEFINES_AIOT_H__
+#define __SYSTEM_DEFINES_AIOT_H__
+
 /* components/Configuracion_AIoT/include/System_Defines_AIoT.h */
 #pragma once
 
@@ -45,3 +48,5 @@
 #define AIOT_LVGL_TICK_PERIOD_MS    5
 // Tamaño del buffer de dibujo LVGL (1/10 de pantalla en SRAM interna para máximo rendimiento)
 #define AIOT_LVGL_BUF_SIZE          (AIOT_LCD_H_RES * 40 * sizeof(uint16_t))
+
+#endif // __SYSTEM_DEFINES_AIOT_H__

@@ -1,4 +1,4 @@
-#include "xpt2046_lvgl9.h"
+#include "src/xpt2046_lvgl9.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
 #include <string.h>

@@ -2,43 +2,46 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_log.h"
+#include "nvs_flash.h"
 
-// Inclusiones de nuestros componentes
+// Inclusiones de Componentes
 #include "Configuracion_AIoT.h"
-#include "src/ui.h" // Cabecera generada por EEZ Studio
+#include "ui.h" // Asegúrate de que el componente UI exporte su include
 
 static const char *TAG = "Main_App";
 
 void app_main(void)
 {
+    // 1. Inicializar NVS
+    esp_err_t ret = nvs_flash_init();
+    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        ret = nvs_flash_init();
+    }
+    ESP_ERROR_CHECK(ret);
+
     ESP_LOGI(TAG, "Iniciando Sistema CrowPanel AIoT...");
 
-    // 1. Inicialización de Hardware
-    if (Configuracion_AIoT_Init()!= ESP_OK) {
-        ESP_LOGE(TAG, "Error Crítico en HAL. Sistema Detenido.");
-        while(1) vTaskDelay(1000 / portTICK_PERIOD_MS);
+    // 2. Inicializar Hardware y LVGL
+    if (Configuracion_AIoT_Init() != ESP_OK) {
+        ESP_LOGE(TAG, "Fallo en Init Hardware. Reiniciando...");
+        return;
     }
 
-    // 2. Inicialización de UI (EEZ Flow)
-    // Esta función configura las pantallas, estilos y acciones definidos en EEZ Studio
+    // 3. Inicializar Interfaz (EEZ Studio)
+    ESP_LOGI(TAG, "Cargando Interfaz de Usuario...");
     ui_init(); 
     
-    ESP_LOGI(TAG, "Interfaz Gráfica Iniciada. Entrando en bucle de eventos.");
-
-    // 3. Bucle Principal
+    // 4. Bucle Principal
     while (1) {
-        // Manejador de Tareas LVGL
-        // Devuelve el tiempo en ms hasta la próxima tarea requerida
-        uint32_t time_till_next = lv_timer_handler();
+        // Mover LVGL (Gráficos)
+        uint32_t ms_to_wait = lv_timer_handler();
         
-        // Manejador de Lógica de Flujo EEZ (Animaciones, cambios de estado)
-        ui_tick(); 
-
-        // Gestión de energía: Dormir lo necesario
-        if (time_till_next == 0) time_till_next = 1;
-        // Capar el tiempo de espera máximo para mantener reactividad (ej. 5ms)
-        if (time_till_next > 5) time_till_next = 5;
+        // Mover EEZ Flow (Lógica)
+        ui_tick();
         
-        vTaskDelay(pdMS_TO_TICKS(time_till_next));
+        // Dormir para no quemar CPU (Mínimo 5ms)
+        if (ms_to_wait < 5) ms_to_wait = 5;
+        vTaskDelay(pdMS_TO_TICKS(ms_to_wait));
     }
 }

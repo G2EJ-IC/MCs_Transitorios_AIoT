@@ -5,7 +5,6 @@
 
 // ESP-IDF Includes
 #include "esp_log.h"
-#include "wifi_manager.h" // Tu gestor WiFi
 
 static const char *TAG = "UI_ACTIONS";
 

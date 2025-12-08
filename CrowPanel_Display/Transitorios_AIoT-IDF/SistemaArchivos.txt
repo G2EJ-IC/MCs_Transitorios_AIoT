@@ -1,0 +1,15 @@
+
+Transitorios_AIoT-IDF/
+├── CMakeLists.txt              (Archivo raíz del proyecto)
+├── sdkconfig                   (Configuración del sistema)
+├── components/
+│   └── Configuracion_AIoT/     (Nuevo Componente Único)
+│       ├── CMakeLists.txt
+│       ├── include/
+│       │   └── Display_AIoT.h  (Cabecera de definición)
+│       ├── src/
+│       │   └── Display_AIoT.c  (Lógica del driver NV3047)
+│		└──ui/
+└── main/
+    ├── CMakeLists.txt
+    └── main_AIoT.c             (Main limpio)

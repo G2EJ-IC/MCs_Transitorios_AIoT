@@ -1,13 +1,3 @@
-  dependencies:
-  # Dependencia Core de LVGL, fijada en la versión 9.2.0 o superior compatible
+dependencies:
   lvgl/lvgl: "^9.2.0"
-  
-  # Driver para el controlador táctil (opcional si es resistivo, necesario si es capacitivo)
-  # Usaremos el componente genérico de Espressif que soporta varios chips (GT911, etc)
-  # Ojo: Para XPT2046 (Resistivo) usar: espressif/esp_lcd_touch_xpt2046
-  # Para GT911 (Capacitivo/Advanced) usar: espressif/esp_lcd_touch_gt911
-  espressif/esp_lcd_touch_gt911: "^1.0.0"
-  
-  # Utilidad de botón (opcional, pero útil)
-  espressif/button: "^3.0.0"
   

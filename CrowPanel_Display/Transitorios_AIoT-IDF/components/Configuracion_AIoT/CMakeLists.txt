@@ -1,5 +1,11 @@
+# Este archivo permite la compilación automática de todos los recursos generados por EEZ Studio
 idf_component_register(
-    SRCS "src/display_hal.c"
-    INCLUDE_DIRS "include"
-    REQUIRES esp_lcd lvgl driver esp_timer esp_lcd_touch_gt911
+    SRC_DIRS    "src" 
+                "src/screens" 
+                "src/images" 
+                "src/fonts" 
+                "src/actions" 
+                "src/vars"
+    INCLUDE_DIRS "src"
+    REQUIRES lvgl
 )

@@ -16,3 +16,8 @@ Transitorios_AIoT-IDF/
 
 
 https://github.com/G2EJ-IC/MCs_Transitorios_AIoT/tree/main/CrowPanel_Display/Transitorios_AIoT-IDF
+
+
+
+
+

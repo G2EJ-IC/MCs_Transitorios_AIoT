@@ -1,5 +1,4 @@
 // LIBRERIA DE ARDUINO.
-#include <Arduino.h>
 #include <DateTime_AIoT.h>
 
   dhms_AIoT::dhms_AIoT(){};

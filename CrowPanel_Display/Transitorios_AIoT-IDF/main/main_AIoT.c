@@ -5,7 +5,7 @@
 
 // Inclusiones de nuestros componentes
 #include "Configuracion_AIoT.h"
-#include "ui.h" // Cabecera generada por EEZ Studio
+#include "src/ui.h" // Cabecera generada por EEZ Studio
 
 static const char *TAG = "Main_App";
 

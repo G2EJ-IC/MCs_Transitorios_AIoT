@@ -1,0 +1,6 @@
+dependencies:
+  # LVGL sí está en la tienda oficial, lo dejamos igual
+  # lvgl/lvgl: "9.2.0"
+
+  # Dependencia del sistema
+  idf: ">=5.0"

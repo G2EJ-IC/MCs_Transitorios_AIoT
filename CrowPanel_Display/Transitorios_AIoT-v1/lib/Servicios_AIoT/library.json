@@ -1,0 +1,15 @@
+{
+  "name": "Servicios",
+  "version": "1.0.0",
+  "description": "Servicios de display, touch e IO para CrowPanel ESP32 HMI.",
+  "authors": [
+    {
+      "name": "Ernesto José Guerrero González",
+      "email": "",
+      "url": ""
+    }
+  ],
+  "license": "MIT",
+  "frameworks": ["arduino"],
+  "platforms": ["espressif32"]
+}

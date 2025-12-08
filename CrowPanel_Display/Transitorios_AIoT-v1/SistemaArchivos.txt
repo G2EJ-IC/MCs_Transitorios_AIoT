@@ -1,0 +1,32 @@
+ScanWiFi_AIoT/
+├── src/
+│   ├── ScanWiFi_AIoT.cpp
+│   └── ScanWiFi_AIoT.h
+├── library.properties
+├── README
+└── ScanWiFi_AIoT.h
+
+
+
+
+Transitorios_AIoT-v1/
+├── include/
+├── lib/
+│   ├── DateTime_AIoT/
+│   ├── mSIM_AIoT/
+│   ├── ScanWiFi_AIoT/
+│   │   ├─ src/
+│   │   ├─ library.properties
+│   │   ├─ README
+│   │   └─ ScanWiFi_AIoT.h
+│   ├── SD_AIoT/
+│   ├── Servicios_AIoT/
+│   ├── SPI_AIoT/
+│   ├── token/
+│   ├── UARTn_AIoT/
+│   └── ui/
+├── partitions/
+├── src/
+├── test/
+├── platformio.ini
+└── Transitorios_AIoT-v1.eez-project

@@ -19,7 +19,6 @@ typedef struct _objects_t {
     lv_obj_t *img_izq_pag2_main3_2;
     lv_obj_t *img_der_pag1_main3_2;
     lv_obj_t *img_izq_pag1_main2;
-    lv_obj_t *slider_porcentaje;
     lv_obj_t *img_der_pag3_main2;
     lv_obj_t *container_main1;
     lv_obj_t *panel_aio_t;
@@ -61,6 +60,7 @@ typedef struct _objects_t {
     lv_obj_t *obj6;
     lv_obj_t *container_main2;
     lv_obj_t *panel02_1;
+    lv_obj_t *slider_porcentaje;
     lv_obj_t *label_slider_porcentaje;
     lv_obj_t *panel03_3;
     lv_obj_t *drop_down;
@@ -91,8 +91,10 @@ void tick_screen_main3();
 void create_screen_main2();
 void tick_screen_main2();
 
-void create_screens();
+void tick_screen_by_id(enum ScreensEnum screenId);
 void tick_screen(int screen_index);
+
+void create_screens();
 
 
 #ifdef __cplusplus

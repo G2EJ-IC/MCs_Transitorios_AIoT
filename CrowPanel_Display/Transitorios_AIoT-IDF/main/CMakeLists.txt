@@ -1,5 +1,6 @@
 idf_component_register(
     SRCS "main_AIoT.c"
     INCLUDE_DIRS "."
-    REQUIRES Configuracion_AIoT ui
+    # Agregamos nvs_flash a la lista
+    REQUIRES Configuracion_AIoT ui nvs_flash
 )

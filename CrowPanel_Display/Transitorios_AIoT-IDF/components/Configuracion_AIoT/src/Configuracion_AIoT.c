@@ -49,6 +49,7 @@ static void lvgl_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *px
     lv_display_flush_ready(disp);
 }
 
+// ESTA ES LA FUNCIÓN QUE TE FALTA
 esp_err_t Configuracion_AIoT_Init(void) {
     ESP_LOGI(TAG, "Iniciando Hardware (7MHz / Buffer x8)...");
 
@@ -69,7 +70,7 @@ esp_err_t Configuracion_AIoT_Init(void) {
             GPIO_NUM_48, GPIO_NUM_47, GPIO_NUM_21, GPIO_NUM_14
         },
         .timings = {
-            .pclk_hz = 7 * 1000 * 1000, // 7 MHz (Estable)
+            .pclk_hz = 7 * 1000 * 1000, // 7 MHz
             .h_res = 480,
             .v_res = 272,
             .hsync_back_porch = 43, .hsync_front_porch = 8, .hsync_pulse_width = 4,
@@ -77,10 +78,7 @@ esp_err_t Configuracion_AIoT_Init(void) {
             .flags.pclk_active_neg = 1,
         },
         .flags.fb_in_psram = 1, 
-        
-        // BUFFER PEQUEÑO (Para evitar WDT Timeout y Reinicios)
-        // 272 / 8 = 34 (Exacto)
-        .bounce_buffer_size_px = 480 * 8, 
+        .bounce_buffer_size_px = 480 * 8, // Buffer x8 (Estable)
     };
 
     ESP_ERROR_CHECK(esp_lcd_new_rgb_panel(&panel_config, &panel_handle));
@@ -119,7 +117,7 @@ esp_err_t Configuracion_AIoT_Init(void) {
     lv_display_set_user_data(lv_disp, panel_handle);
     lv_display_set_flush_cb(lv_disp, lvgl_flush_cb);
 
-    // Usamos buffer de 8 líneas en SRAM (Igual que bounce buffer para sincronía)
+    // Buffer x8 Líneas
     #define BUFFER_LINES 8 
     void *buf1 = heap_caps_malloc(480 * BUFFER_LINES * sizeof(uint16_t), MALLOC_CAP_INTERNAL | MALLOC_CAP_DMA);
     void *buf2 = heap_caps_malloc(480 * BUFFER_LINES * sizeof(uint16_t), MALLOC_CAP_INTERNAL | MALLOC_CAP_DMA);

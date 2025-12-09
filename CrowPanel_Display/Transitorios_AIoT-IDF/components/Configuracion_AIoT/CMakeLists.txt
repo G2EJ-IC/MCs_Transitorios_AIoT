@@ -1,5 +1,7 @@
+file(GLOB_RECURSE SOURCES "src/*.c")
+
 idf_component_register(
-    SRC_DIRS "src"
+    SRCS ${SOURCES}
     INCLUDE_DIRS "include"
-    REQUIRES esp_lcd driver esp_driver_spi lvgl
+    REQUIRES lvgl esp_lcd
 )

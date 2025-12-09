@@ -1,8 +1,7 @@
-# Buscar archivos en la raíz del componente (.)
-file(GLOB SRCS "*.c" "*.cpp")
+file(GLOB_RECURSE SOURCES "*.c" "*.cpp")
 
 idf_component_register(
-    SRCS ${SRCS}
+    SRCS ${SOURCES}
     INCLUDE_DIRS "."
-    REQUIRES lvgl
+    REQUIRES lvgl WiFi_AIoT System_Control_AIoT
 )

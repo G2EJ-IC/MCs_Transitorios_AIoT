@@ -307,9 +307,9 @@
                           "objID": "c22bbda0-c63c-467d-ca0d-e16f79a46128",
                           "type": "LVGLPanelWidget",
                           "left": 62,
-                          "top": 15,
+                          "top": 12,
                           "width": 320,
-                          "height": 50,
+                          "height": 56,
                           "customInputs": [],
                           "customOutputs": [],
                           "style": {
@@ -369,7 +369,7 @@
                                 }
                               },
                               "groupIndex": 0,
-                              "text": "ERNESTO JOSE GUERRERO GONZALEZ\nAIoT Transitorios Hidraulicos",
+                              "text": "ERNESTO JOSE GUERRERO GONZALEZ\nJUAN PAULO DELGADO ORDONEZ\nAIoT Transitorios Hidraulicos",
                               "textType": "literal",
                               "longMode": "WRAP",
                               "recolor": false

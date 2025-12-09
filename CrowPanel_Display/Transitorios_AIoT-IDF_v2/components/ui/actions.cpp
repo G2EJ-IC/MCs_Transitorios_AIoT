@@ -10,7 +10,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-// COMPONENTES (C Linkage)
+// TUS COMPONENTES (C Linkage)
 extern "C" {
     #include "WiFi_AIoT.h"
     #include "System_Control_AIoT.h" // <--- TU NUEVO HEADER
@@ -53,11 +53,9 @@ static void update_ui_wifi_data()
         if (objects.bt_conectado_main3_tab2) 
             lv_obj_set_style_bg_color(objects.bt_conectado_main3_tab2, lv_color_hex(0x008000), LV_PART_MAIN | LV_STATE_DEFAULT);
     } else {
-        if (objects.ui_lab_ssid) lv_label_set_text(objects.ui_lab_ssid, "Nombre WiFi (SSID)");
+        if (objects.ui_lab_ssid) lv_label_set_text(objects.ui_lab_ssid, "Desconectado");
         if (objects.ui_lab_ip)   lv_label_set_text(objects.ui_lab_ip, "xx.xx.xx.xx");
-        if (objects.ui_lab_dns)  lv_label_set_text(objects.ui_lab_dns, "xx.xx.xx.xx");
-        if (objects.ui_lab_mac)  lv_label_set_text(objects.ui_lab_mac, "xx:xx:xx:xx:xx:xx");
-
+        if (objects.ui_lab_dns)  lv_label_set_text(objects.ui_lab_dns, "xx:xx:xx:xx:xx:xx"); 
         if (objects.bt_conectado_main3_tab1) 
             lv_obj_set_style_bg_color(objects.bt_conectado_main3_tab1, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
         if (objects.bt_conectado_main3_tab2) 
@@ -95,11 +93,6 @@ void action_fn_connec(lv_event_t * e)
         keyb_linked = true;
     }
     update_ui_wifi_data();
-}
-
-void action_fn_connec_aio_t(lv_event_t * e) 
-{
-    action_fn_connec(e);
 }
 
 void action_fn_re_scan(lv_event_t * e) {

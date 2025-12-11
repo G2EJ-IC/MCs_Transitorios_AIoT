@@ -14,11 +14,9 @@ typedef struct _objects_t {
     lv_obj_t *img_der_pag2_main1;
     lv_obj_t *img_izq_pag2_main3_1;
     lv_obj_t *bt_connec_wi_fi_main3;
-    lv_obj_t *bt_conectado_main3_tab1;
     lv_obj_t *bt_re_scan_wi_fi_main3;
     lv_obj_t *img_der_pag1_main3_1;
     lv_obj_t *img_izq_pag2_main3_2;
-    lv_obj_t *bt_conectado_main3_tab2;
     lv_obj_t *img_der_pag1_main3_2;
     lv_obj_t *img_izq_pag1_main2;
     lv_obj_t *img_der_pag3_main2;
@@ -32,6 +30,7 @@ typedef struct _objects_t {
     lv_obj_t *tab_view_main2;
     lv_obj_t *pag2;
     lv_obj_t *panel02_3;
+    lv_obj_t *bt_conectado_main3_tab1;
     lv_obj_t *panel03_4;
     lv_obj_t *label_wi_fi_ssid_pag1;
     lv_obj_t *text_area_ssid;
@@ -40,6 +39,7 @@ typedef struct _objects_t {
     lv_obj_t *keyboard;
     lv_obj_t *pag3;
     lv_obj_t *panel02_2;
+    lv_obj_t *bt_conectado_main3_tab2;
     lv_obj_t *panel03_5;
     lv_obj_t *container_label;
     lv_obj_t *label_red_wi_fi_ssid;

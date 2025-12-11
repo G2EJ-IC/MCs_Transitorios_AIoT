@@ -52,16 +52,6 @@ extern "C" void set_var_text_area_ssid_value(const char *value) {
     text_area_ssid_value = value;
 }
 
-std::string text_area_password_value;
-
-extern "C" const char *get_var_text_password_value() {
-    return text_area_password_value.c_str();
-}
-
-extern "C" void set_var_text_password_value(const char *value) {
-    text_area_password_value = value;
-}
-
 #ifdef __cplusplus
 }
 #endif

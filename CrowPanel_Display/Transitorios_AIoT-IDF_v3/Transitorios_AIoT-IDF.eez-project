@@ -163,15 +163,6 @@
       "name": "Fn_ReScan",
       "description": "Fn_ReScan",
       "implementationType": "native"
-    },
-    {
-      "objID": "20106df4-833f-4a4f-a007-1997cda607d5",
-      "components": [],
-      "connectionLines": [],
-      "localVariables": [],
-      "userProperties": [],
-      "name": "Fn_Connec_AIoT",
-      "implementationType": "native"
     }
   ],
   "userPages": [
@@ -1054,15 +1045,7 @@
                                   "locked": false,
                                   "hiddenInEditor": false,
                                   "timeline": [],
-                                  "eventHandlers": [
-                                    {
-                                      "objID": "6f1e8009-a102-4bb0-a8e2-04a8bb765ff9",
-                                      "eventName": "PRESSED",
-                                      "handlerType": "action",
-                                      "action": "Fn_Connec_AIoT",
-                                      "userData": 0
-                                    }
-                                  ],
+                                  "eventHandlers": [],
                                   "identifier": "Bt_Conectado_Main3_Tab1",
                                   "leftUnit": "px",
                                   "topUnit": "px",
@@ -1591,7 +1574,6 @@
                                     "childStyles": []
                                   },
                                   "locked": true,
-                                  "hiddenInEditor": false,
                                   "timeline": [],
                                   "eventHandlers": [],
                                   "identifier": "Keyboard",
@@ -1871,15 +1853,7 @@
                                   "locked": false,
                                   "hiddenInEditor": false,
                                   "timeline": [],
-                                  "eventHandlers": [
-                                    {
-                                      "objID": "93cfa393-2779-4333-d9a0-05c28ce5f05a",
-                                      "eventName": "PRESSED",
-                                      "handlerType": "action",
-                                      "action": "Fn_Connec_AIoT",
-                                      "userData": 0
-                                    }
-                                  ],
+                                  "eventHandlers": [],
                                   "identifier": "Bt_Conectado_Main3_Tab2",
                                   "leftUnit": "px",
                                   "topUnit": "px",
@@ -2176,7 +2150,7 @@
                                       "objID": "a73c3f3e-8e02-42cf-9972-db3fbbf32e60",
                                       "type": "LVGLLabelWidget",
                                       "left": 5,
-                                      "top": 30,
+                                      "top": 35,
                                       "width": 94,
                                       "height": 16,
                                       "customInputs": [],
@@ -2223,7 +2197,7 @@
                                       "objID": "d253bcbc-ed86-409a-8a1f-f4512c477425",
                                       "type": "LVGLLabelWidget",
                                       "left": 5,
-                                      "top": 45,
+                                      "top": 55,
                                       "width": 112,
                                       "height": 16,
                                       "customInputs": [],
@@ -2238,7 +2212,7 @@
                                       "timeline": [],
                                       "eventHandlers": [],
                                       "identifier": "Label_Direccion_DNS",
-                                      "leftUnit": "%",
+                                      "leftUnit": "px",
                                       "topUnit": "%",
                                       "widthUnit": "content",
                                       "heightUnit": "content",
@@ -2270,7 +2244,7 @@
                                       "objID": "25d39c4b-56d0-41e4-955d-93852de20354",
                                       "type": "LVGLLabelWidget",
                                       "left": 5,
-                                      "top": 60,
+                                      "top": 75,
                                       "width": 113,
                                       "height": 16,
                                       "customInputs": [],
@@ -2403,7 +2377,7 @@
                                       "objID": "2175cf6e-7807-4064-dcdc-ec8ee3a605f5",
                                       "type": "LVGLLabelWidget",
                                       "left": 5,
-                                      "top": 30,
+                                      "top": 35,
                                       "width": 140,
                                       "height": 16,
                                       "customInputs": [],
@@ -2450,7 +2424,7 @@
                                       "objID": "9c17989c-4349-403f-9055-7f4ea109efe6",
                                       "type": "LVGLLabelWidget",
                                       "left": 5,
-                                      "top": 45,
+                                      "top": 55,
                                       "width": 140,
                                       "height": 16,
                                       "customInputs": [],
@@ -2489,7 +2463,7 @@
                                         }
                                       },
                                       "groupIndex": 0,
-                                      "text": "xx.x.xx.xx",
+                                      "text": "xx:xx:xx:xx:xx:xx",
                                       "textType": "literal",
                                       "longMode": "WRAP",
                                       "recolor": false
@@ -2498,7 +2472,7 @@
                                       "objID": "e260661f-b646-45e2-bd81-32173b0c7b38",
                                       "type": "LVGLLabelWidget",
                                       "left": 5,
-                                      "top": 60,
+                                      "top": 75,
                                       "width": 140,
                                       "height": 16,
                                       "customInputs": [],
@@ -2537,7 +2511,7 @@
                                         }
                                       },
                                       "groupIndex": 0,
-                                      "text": "xx:xx:xx:xx:xx:xx",
+                                      "text": "xx.xx.xx.xx",
                                       "textType": "literal",
                                       "longMode": "WRAP",
                                       "recolor": false
@@ -2583,10 +2557,10 @@
                             {
                               "objID": "916c5bf6-73f8-4a00-f4ee-d166e31d7d7e",
                               "type": "LVGLContainerWidget",
-                              "left": 11,
+                              "left": 10,
                               "top": 111,
                               "width": 460,
-                              "height": 131,
+                              "height": 126,
                               "customInputs": [],
                               "customOutputs": [],
                               "style": {
@@ -2646,8 +2620,8 @@
                                 {
                                   "objID": "3040f6cb-5817-4366-aecb-f9111fb9d3ac",
                                   "type": "LVGLButtonWidget",
-                                  "left": 20,
-                                  "top": 84,
+                                  "left": 239,
+                                  "top": 86,
                                   "width": 200,
                                   "height": 30,
                                   "customInputs": [],
@@ -2672,7 +2646,7 @@
                                       "objID": "819453af-3e40-46f9-e05b-5e20d183fb6b",
                                       "type": "LVGLLabelWidget",
                                       "left": 0,
-                                      "top": 0,
+                                      "top": -1,
                                       "width": 183,
                                       "height": 18,
                                       "customInputs": [],
@@ -3862,8 +3836,8 @@
                             {
                               "objID": "e154b2bd-7fa4-4e15-b2f6-d552888470a3",
                               "type": "LVGLButtonWidget",
-                              "left": 20,
-                              "top": 80,
+                              "left": 22,
+                              "top": 76,
                               "width": 200,
                               "height": 30,
                               "customInputs": [],

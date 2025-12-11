@@ -3,14 +3,14 @@
 #include "freertos/task.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
-#include "esp_task_wdt.h"
+#include "esp_task_wdt.h" // <--- IMPORTANTE: Librería del Watchdog
 
-// COMPONENTES
+// TUS COMPONENTES
 #include "Configuracion_AIoT.h"
 #include "WiFi_AIoT.h"
 #include "System_Control_AIoT.h"
 #include "ui.h" 
-#include "lvgl.h"
+#include "lvgl.h" // Necesario para lv_timer_handler
 
 // Declaración externa
 extern void ui_update_periodic_task(void);
@@ -36,14 +36,14 @@ void app_main(void)
     // Registramos esta tarea en el Watchdog para poder alimentarlo
     esp_task_wdt_add(NULL);
 
-    for (;;) {
+    while (1) {
         // 1. LVGL (Gráficos)
         uint32_t time_until_next = lv_timer_handler();
         
         // 2. EEZ Flow
         ui_tick();
         
-        // 3. Lógica (Reloj + Slider)
+        // 3. Tu Lógica (Reloj + Slider)
         ui_update_periodic_task();
         
         // 4. ALIMENTAR AL PERRO (Evita el reinicio)
@@ -54,7 +54,7 @@ void app_main(void)
         // para mantener el sistema fluido y responder al touch.
         if (time_until_next > 10) time_until_next = 10;
         if (time_until_next < 1) time_until_next = 1;
-
+        
         vTaskDelay(pdMS_TO_TICKS(time_until_next));
     }
 }

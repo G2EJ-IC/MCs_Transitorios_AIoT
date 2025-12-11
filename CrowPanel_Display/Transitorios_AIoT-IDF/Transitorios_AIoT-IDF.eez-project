@@ -138,6 +138,14 @@
         "defaultValue": "\"\"",
         "persistent": false,
         "native": true
+      },
+      {
+        "objID": "f0e64e0f-cda1-487a-cdcc-ec435c9a6ca3",
+        "name": "Text_Password_Value",
+        "type": "string",
+        "defaultValue": "\"\"",
+        "persistent": false,
+        "native": true
       }
     ],
     "structures": [],
@@ -171,6 +179,24 @@
       "localVariables": [],
       "userProperties": [],
       "name": "Fn_Connec_AIoT",
+      "implementationType": "native"
+    },
+    {
+      "objID": "06fa1bb4-7867-4f23-d06b-14c5eb39481c",
+      "components": [],
+      "connectionLines": [],
+      "localVariables": [],
+      "userProperties": [],
+      "name": "Fn_TextAreaSSID",
+      "implementationType": "native"
+    },
+    {
+      "objID": "2641e7b8-7226-4ef0-ceb2-a7ea7adfacb4",
+      "components": [],
+      "connectionLines": [],
+      "localVariables": [],
+      "userProperties": [],
+      "name": "Fn_TextAreaPassword",
       "implementationType": "native"
     }
   ],

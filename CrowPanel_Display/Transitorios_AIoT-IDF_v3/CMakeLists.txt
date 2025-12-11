@@ -2,7 +2,7 @@
 # CMakeLists in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.16)
 
-# CRÍTICO: Forzar la búsqueda de componentes en la carpeta 'components'
+# CRÍTICO: Forzar la búsqueda de tus componentes en la carpeta 'components'
 set(EXTRA_COMPONENT_DIRS components)
 
 # Incluir herramientas de compilación de ESP-IDF

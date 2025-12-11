@@ -434,6 +434,7 @@ native_var_t native_vars[] = {
     { NATIVE_VAR_TYPE_BOOLEAN, get_var_connec, set_var_connec }, 
     { NATIVE_VAR_TYPE_BOOLEAN, get_var_re_scan, set_var_re_scan }, 
     { NATIVE_VAR_TYPE_STRING, get_var_text_area_ssid_value, set_var_text_area_ssid_value }, 
+    { NATIVE_VAR_TYPE_STRING, get_var_text_password_value, set_var_text_password_value }, 
 };
 
 
@@ -441,6 +442,8 @@ ActionExecFunc actions[] = {
     action_fn_connec,
     action_fn_re_scan,
     action_fn_connec_aio_t,
+    action_fn_text_area_ssid,
+    action_fn_text_area_password,
 };
 
 

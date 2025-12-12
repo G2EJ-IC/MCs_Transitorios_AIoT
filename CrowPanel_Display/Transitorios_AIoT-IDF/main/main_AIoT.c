@@ -55,6 +55,7 @@ void app_main(void)
         if (time_until_next > 10) time_until_next = 10;
         if (time_until_next < 1) time_until_next = 1;
 
+        sys_control_aiot_manage_sleep();
         vTaskDelay(pdMS_TO_TICKS(time_until_next));
     }
 }

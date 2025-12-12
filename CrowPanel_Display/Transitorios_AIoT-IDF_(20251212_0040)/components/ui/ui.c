@@ -434,7 +434,7 @@ native_var_t native_vars[] = {
     { NATIVE_VAR_TYPE_BOOLEAN, get_var_connec, set_var_connec }, 
     { NATIVE_VAR_TYPE_BOOLEAN, get_var_re_scan, set_var_re_scan }, 
     { NATIVE_VAR_TYPE_STRING, get_var_text_area_ssid_value, set_var_text_area_ssid_value }, 
-    { NATIVE_VAR_TYPE_STRING, get_var_text_password_value, set_var_text_password_value }, 
+    { NATIVE_VAR_TYPE_STRING, get_var_text_area_pass_value, set_var_text_area_pass_value }, 
 };
 
 

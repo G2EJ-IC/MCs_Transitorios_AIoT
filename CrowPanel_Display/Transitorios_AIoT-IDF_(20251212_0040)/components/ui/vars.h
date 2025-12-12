@@ -28,8 +28,8 @@ extern bool get_var_re_scan();
 extern void set_var_re_scan(bool value);
 extern const char *get_var_text_area_ssid_value();
 extern void set_var_text_area_ssid_value(const char *value);
-extern const char *get_var_text_password_value();
-extern void set_var_text_password_value(const char *value);
+extern const char *get_var_text_area_pass_value();
+extern void set_var_text_area_pass_value(const char *value);
 
 
 #ifdef __cplusplus

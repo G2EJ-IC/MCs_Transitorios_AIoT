@@ -1,7 +1,6 @@
 idf_component_register(SRCS "ui/ui.c" 
                             "ui/screens.c" 
                             "ui/images.c" 
-                            "ui/actions.c" 
                             "src/actions.cpp"  
                             "src/vars.cpp"
                         INCLUDE_DIRS "include" "ui"

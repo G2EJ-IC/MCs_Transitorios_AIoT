@@ -4,7 +4,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "lvgl.h"  
-#include "esp_timer.h" // <--- AGREGADO: Necesario para esp_timer_get_time()
+#include "esp_timer.h" 
 
 static const char *TAG = "IO_AIOT";
 
@@ -102,7 +102,7 @@ void IO_Set_Tiempo_Suspension(int32_t index) {
 }
 
 void IO_Get_Uptime(char *buffer, size_t len) {
-    int64_t uptime_us = esp_timer_get_time(); // AHORA SÍ RECONOCE ESTA FUNCIÓN
+    int64_t uptime_us = esp_timer_get_time();
     int uptime_sec = uptime_us / 1000000;
     
     int days = uptime_sec / 86400;
@@ -129,12 +129,13 @@ void IO_Task_Manager(void) {
         return;
     }
 
+    // Get inactive time from LVGL
     uint32_t inactive_ms = lv_disp_get_inactive_time(NULL);
 
     if (inactive_ms > g_suspension_timeout_ms) {
         if (!g_is_dimmed) {
             g_is_dimmed = true;
-            apply_pwm_brightness(5); 
+            apply_pwm_brightness(5); // Low brightness for standby
             ESP_LOGI(TAG, "System suspended due to inactivity.");
         }
     } else {

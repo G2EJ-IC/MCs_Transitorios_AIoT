@@ -5,57 +5,64 @@
 #include "nvs_flash.h"
 #include "esp_task_wdt.h"
 
-// COMPONENTES
+// COMPONENTS
 #include "Configuracion_AIoT.h"
 #include "WiFi_AIoT.h"
 #include "IO_AIoT.h"
-#include "Bluetooth_AIoT.h" // <--- NUEVO INCLUDE
+// #include "Bluetooth_AIoT.h" // REMOVED: Bluetooth module disabled
 #include "ui.h" 
 #include "lvgl.h"
 
-// Declaración externa
+// External declaration
 extern void ui_update_periodic_task(void);
 
 static const char *TAG = "Main_App";
 
 void app_main(void)
 {
-    // Inicializar NVS
+    // 1. Initialize NVS (Non-Volatile Storage)
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_ERROR_CHECK(nvs_flash_erase());
         ret = nvs_flash_init();
     }
     
-    // Inicializar Hardware General
-    if (Configuracion_AIoT_Init() != ESP_OK) return;
+    // 2. Initialize General Hardware (LCD, Touch, etc.)
+    if (Configuracion_AIoT_Init() != ESP_OK) {
+        ESP_LOGE(TAG, "Hardware initialization failed!");
+        return;
+    }
     
-    IO_AIoT_Init();        // Pantalla y Energía
-    Bluetooth_AIoT_Init(); // <--- NUEVO: Inicializar pila Bluetooth
-    wifi_init_sta();       // WiFi
+    IO_AIoT_Init();        // Power Management & Backlight
+    // Bluetooth_AIoT_Init(); // REMOVED
+    wifi_init_sta();       // WiFi Station Mode
     
+    // 3. Initialize UI (EEZ Studio / LVGL)
     ui_init(); 
     
+    // 4. Add Main Task to Watchdog
     esp_task_wdt_add(NULL);
 
+    ESP_LOGI(TAG, "System Initialized. Entering Main Loop...");
+
     for (;;) {
-        // 1. LVGL
+        // A. LVGL Tick Handler
         uint32_t time_until_next = lv_timer_handler();
         
-        // 2. EEZ Flow
+        // B. EEZ Flow Tick
         ui_tick();
         
-        // 3. Lógica UI (Reloj, Wifi, Slider)
+        // C. Custom UI Logic (Clock, WiFi status, Power)
         ui_update_periodic_task();
         
-        // 4. Watchdog
+        // D. Watchdog Reset
         esp_task_wdt_reset();
 
-        // 5. Delay Inteligente
+        // E. Intelligent Delay to prevent starvation
         if (time_until_next > 10) time_until_next = 10;
         if (time_until_next < 1) time_until_next = 1;
 
-        // 6. GESTOR DE ENERGÍA
+        // F. Power Management Task (Auto-Sleep)
         IO_Task_Manager();
 
         vTaskDelay(pdMS_TO_TICKS(time_until_next));

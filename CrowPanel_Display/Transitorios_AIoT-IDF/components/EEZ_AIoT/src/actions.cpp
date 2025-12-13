@@ -3,35 +3,36 @@
 #include "vars.h"
 #include "screens.h"
 
-// Headers del Sistema
+// System Headers
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-// Headers C Linkage
+// C Linkage Headers
 extern "C" {
     #include "WiFi_AIoT.h"
     #include "IO_AIoT.h" 
-    #include "Bluetooth_AIoT.h" // <--- NUEVO INCLUDE
+    // #include "Bluetooth_AIoT.h" // REMOVED
 }
 
 static const char *TAG = "UI_ACTIONS";
 
-enum MetodoConexion {
-    METODO_WIFI_MULTI = 0,
-    METODO_BLUETOOTH  = 1,
-    METODO_AMBOS      = 2
+// Connection Methods Enum
+enum ConnectionMethod {
+    METHOD_WIFI_MULTI = 0,
+    METHOD_BLUETOOTH  = 1, // Kept for UI index compatibility, but logic disabled
+    METHOD_BOTH       = 2
 };
 
 // -------------------------------------------------------------------------
-// 1. FUNCIONES AUXILIARES
+// 1. HELPER FUNCTIONS
 // -------------------------------------------------------------------------
 static void helper_update_visuals() {
     bool is_wifi_connected = get_wifi_is_connected();
-    bool is_bt_connected = Bluetooth_Is_Connected(); // Consultamos estado BT
+    // bool is_bt_connected = Bluetooth_Is_Connected(); // REMOVED
     
-    // Actualizamos la variable global de conexión (lógica OR: si uno está, estamos conectados)
-    set_var_connec(is_wifi_connected || is_bt_connected);
+    // Update global connection variable
+    set_var_connec(is_wifi_connected);
 
     // --- WIFI VISUALS ---
     if (is_wifi_connected) {
@@ -40,13 +41,13 @@ static void helper_update_visuals() {
         if (objects.ui_lab_dns)  lv_label_set_text(objects.ui_lab_dns, get_wifi_dns());
         if (objects.ui_lab_mac)  lv_label_set_text(objects.ui_lab_mac, get_wifi_mac());
     } else {
-        if (objects.ui_lab_ssid) lv_label_set_text(objects.ui_lab_ssid, "Desconectado");
+        if (objects.ui_lab_ssid) lv_label_set_text(objects.ui_lab_ssid, "Disconnected");
         if (objects.ui_lab_ip)   lv_label_set_text(objects.ui_lab_ip, "0.0.0.0");
     }
 
-    // --- INDICADORES LED EN PANTALLA ---
-    // Verde si hay alguna conexión válida
-    lv_color_t color_status = (is_wifi_connected || is_bt_connected) ? lv_color_hex(0x008000) : lv_color_hex(0xFF0000);
+    // --- ON-SCREEN LED INDICATORS ---
+    // Green if connected, Red if not
+    lv_color_t color_status = (is_wifi_connected) ? lv_color_hex(0x008000) : lv_color_hex(0xFF0000);
 
     if (objects.bt_conectado_main3_tab1) 
         lv_obj_set_style_bg_color(objects.bt_conectado_main3_tab1, color_status, LV_PART_MAIN);
@@ -56,48 +57,45 @@ static void helper_update_visuals() {
 
 static void helper_perform_connect() {
     char ssid_buffer[64] = {0};
-    // Leer SSID
+    // Read SSID
     if (objects.text_area_ssid) { 
         lv_dropdown_get_selected_str(objects.text_area_ssid, ssid_buffer, sizeof(ssid_buffer));
         set_var_text_area_ssid_value(ssid_buffer);
     }
 
-    // Leer Password
+    // Read Password
     const char *pass_ptr = "";
     if (objects.text_area_password) {
         pass_ptr = lv_textarea_get_text(objects.text_area_password);
         set_var_text_area_pass_value(pass_ptr);
     }
 
-    // Leer Método de Conexión
-    int32_t metodo = 0; 
+    // Read Connection Method
+    int32_t method = 0; 
     if (objects.drop_down_1) { 
-        metodo = lv_dropdown_get_selected(objects.drop_down_1);
-        set_var_drop_down_metodo(metodo);
+        method = lv_dropdown_get_selected(objects.drop_down_1);
+        set_var_drop_down_metodo(method);
     } else {
-        metodo = get_var_drop_down_metodo();
+        method = get_var_drop_down_metodo();
     }
 
-    ESP_LOGI(TAG, "Conexión Solicitada. Método: %d", (int)metodo);
+    ESP_LOGI(TAG, "Connection Requested. Method: %d", (int)method);
 
-    // --- LÓGICA DE CONEXIÓN ---
+    // --- CONNECTION LOGIC ---
     
-    // 1. Manejo WiFi
-    if (metodo == METODO_WIFI_MULTI || metodo == METODO_AMBOS) {
+    // 1. WiFi Handling
+    if (method == METHOD_WIFI_MULTI || method == METHOD_BOTH) {
         if (strlen(ssid_buffer) > 0) {
             wifi_connect(ssid_buffer, (char*)pass_ptr);
         } else {
-            ESP_LOGW(TAG, "SSID vacío. No se puede conectar WiFi.");
+            ESP_LOGW(TAG, "Empty SSID. Cannot connect to WiFi.");
         }
     }
 
-    // 2. Manejo Bluetooth
-    if (metodo == METODO_BLUETOOTH || metodo == METODO_AMBOS) {
-        // Al "conectar" Bluetooth, iniciamos el Advertising para ser visibles
-        Bluetooth_Start_Advertising();
-    } else {
-        // Si seleccionó solo WiFi, podríamos apagar BT para ahorrar
-        // Bluetooth_Stop(); 
+    // 2. Bluetooth Handling (DISABLED)
+    if (method == METHOD_BLUETOOTH || method == METHOD_BOTH) {
+        ESP_LOGW(TAG, "Bluetooth is currently disabled in firmware.");
+        // Bluetooth_Start_Advertising(); // REMOVED
     }
 
     vTaskDelay(pdMS_TO_TICKS(200)); 
@@ -109,7 +107,7 @@ static void event_keyboard_ready_cb(lv_event_t * e) {
 }
 
 // -------------------------------------------------------------------------
-// 2. ACCIONES EEZ STUDIO
+// 2. EEZ STUDIO ACTIONS
 // -------------------------------------------------------------------------
 
 void action_fn_connec_aio_t(lv_event_t * e) {
@@ -117,15 +115,15 @@ void action_fn_connec_aio_t(lv_event_t * e) {
 }
 
 void action_fn_connec(lv_event_t * e) {
-    // Escaneo solo si es modo WiFi o Ambos
-    int32_t metodo = 0;
-    if (objects.drop_down_1) metodo = lv_dropdown_get_selected(objects.drop_down_1);
+    // Scan only if WiFi mode is selected
+    int32_t method = 0;
+    if (objects.drop_down_1) method = lv_dropdown_get_selected(objects.drop_down_1);
 
-    if (metodo == METODO_WIFI_MULTI || metodo == METODO_AMBOS) {
-        char *lista = wifi_scan_networks_get_list();
-        if (lista && objects.text_area_ssid) {
-            lv_dropdown_set_options(objects.text_area_ssid, lista);
-            free(lista);
+    if (method == METHOD_WIFI_MULTI || method == METHOD_BOTH) {
+        char *list = wifi_scan_networks_get_list();
+        if (list && objects.text_area_ssid) {
+            lv_dropdown_set_options(objects.text_area_ssid, list);
+            free(list);
         }
     }
 
@@ -144,11 +142,11 @@ void action_fn_re_scan(lv_event_t * e) {
 }
 
 void action_fn_update_suspension(lv_event_t * e) {
-    // Vacío intencionalmente (polling directo)
+    // Intentionally empty (handled by periodic task)
 }
 
 // -------------------------------------------------------------------------
-// 3. TAREA PERIÓDICA
+// 3. PERIODIC TASK
 // -------------------------------------------------------------------------
 extern "C" void ui_update_periodic_task(void)
 {
@@ -158,7 +156,7 @@ extern "C" void ui_update_periodic_task(void)
 
     uint32_t now = xTaskGetTickCount() * portTICK_PERIOD_MS;
 
-    // --- A. RELOJ (Cada 1000 ms) ---
+    // --- A. CLOCK (Every 1000 ms) ---
     if ((now - last_clock_update) >= 1000) {
         char time_str[32];
         IO_Get_Uptime(time_str, sizeof(time_str));
@@ -169,13 +167,13 @@ extern "C" void ui_update_periodic_task(void)
         last_clock_update = now;
     }
 
-    // --- B. ESTADO CONEXIÓN (Cada 500 ms) ---
+    // --- B. CONNECTION STATUS (Every 500 ms) ---
     if ((now - last_wifi_update) >= 500) {
         helper_update_visuals();
         last_wifi_update = now;
     }
 
-    // --- C. SINCRONIZACIÓN DIRECTA (Slider y DropDown) ---
+    // --- C. DIRECT SYNC (Slider & DropDown) ---
     IO_Set_Brillo_Manual(get_var_slider_porcentaje());
 
     int32_t current_index = 0;

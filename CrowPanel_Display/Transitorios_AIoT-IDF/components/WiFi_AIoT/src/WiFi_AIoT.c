@@ -10,10 +10,10 @@
 
 static const char *TAG = "Wifi_AIoT";
 
-// Variables de Estado
+// State Variables
 static char current_ssid[33] = "";
 static char current_ip[16]   = "0.0.0.0";
-static char current_dns[16]  = "0.0.0.0"; // <--- NUEVA VARIABLE
+static char current_dns[16]  = "0.0.0.0"; 
 static char current_mac[18]  = "00:00:00:00:00:00";
 static bool is_connected = false;
 
@@ -23,29 +23,29 @@ static void event_handler(void* arg, esp_event_base_t event_base,
     if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
         ip_event_got_ip_t* event = (ip_event_got_ip_t*) event_data;
         
-        // 1. Obtener IP
+        // 1. Get IP Address
         sprintf(current_ip, IPSTR, IP2STR(&event->ip_info.ip));
         
-        // 2. Obtener DNS (Primary)
+        // 2. Get DNS (Primary)
         esp_netif_t *netif = event->esp_netif;
         esp_netif_dns_info_t dns_info;
         if (esp_netif_get_dns_info(netif, ESP_NETIF_DNS_MAIN, &dns_info) == ESP_OK) {
             sprintf(current_dns, IPSTR, IP2STR(&dns_info.ip.u_addr.ip4));
         }
 
-        // 3. Obtener MAC
+        // 3. Get MAC Address
         uint8_t mac[6];
         esp_wifi_get_mac(WIFI_IF_STA, mac);
         sprintf(current_mac, "%02X:%02X:%02X:%02X:%02X:%02X", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
         
         is_connected = true;
-        ESP_LOGI(TAG, "CONECTADO! IP:%s DNS:%s", current_ip, current_dns);
+        ESP_LOGI(TAG, "CONNECTED! IP:%s DNS:%s", current_ip, current_dns);
     }
     else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
         is_connected = false;
         strcpy(current_ip, "0.0.0.0");
         strcpy(current_dns, "0.0.0.0"); // Reset DNS
-        ESP_LOGW(TAG, "Desconectado...");
+        ESP_LOGW(TAG, "Disconnected... Retrying...");
         esp_wifi_connect();
     }
 }
@@ -110,8 +110,8 @@ char* wifi_scan_networks_get_list(void)
 }
 
 // Getters
-bool get_wifi_is_connected(void) { return is_connected; }
+bool  get_wifi_is_connected(void) { return is_connected; }
 char* get_wifi_ssid(void) { return current_ssid; }
-char* get_wifi_ip(void) { return current_ip; }
-char* get_wifi_dns(void) { return current_dns; } // <--- Getter Nuevo
-char* get_wifi_mac(void) { return current_mac; }
+char* get_wifi_ip(void)   { return current_ip; }
+char* get_wifi_dns(void)  { return current_dns; } 
+char* get_wifi_mac(void)  { return current_mac; }

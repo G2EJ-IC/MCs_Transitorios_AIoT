@@ -1,7 +1,8 @@
-file(GLOB_RECURSE SOURCES "*.c" "*.cpp")
-
-idf_component_register(
-    SRC_DIRS "src" "ui"
-    INCLUDE_DIRS "src" "ui"
-    REQUIRES lvgl WiFi_AIoT System_Control_AIoT
-)
+idf_component_register(SRCS "ui/ui.c" 
+                            "ui/screens.c" 
+                            "ui/images.c" 
+                            "ui/actions.c" 
+                            "src/actions.cpp"  
+                            "src/vars.cpp"
+                        INCLUDE_DIRS "include" "ui"
+                        REQUIRES lvgl WiFi_AIoT IO_AIoT Bluetooth_AIoT)

@@ -1051,9 +1051,9 @@
                                     {
                                       "objID": "11c0ca42-469c-4541-85af-2c4fa2542df8",
                                       "type": "LVGLLabelWidget",
-                                      "left": 9,
+                                      "left": 20,
                                       "top": -3,
-                                      "width": 56,
+                                      "width": 35,
                                       "height": 16,
                                       "customInputs": [],
                                       "customOutputs": [],
@@ -1088,7 +1088,7 @@
                                         }
                                       },
                                       "groupIndex": 0,
-                                      "text": "Connec",
+                                      "text": "Scan",
                                       "textType": "literal",
                                       "longMode": "WRAP",
                                       "recolor": false
@@ -1639,7 +1639,7 @@
                                     }
                                   },
                                   "groupIndex": 0,
-                                  "text": "",
+                                  "text": "(11291104BG397)**397",
                                   "textType": "literal",
                                   "placeholder": "Enter Passwords",
                                   "oneLineMode": false,
@@ -3872,7 +3872,7 @@
                                     "objID": "bcbf1f7b-32bd-4cd0-a52b-ccaeb7e5fe0f"
                                   },
                                   "groupIndex": 0,
-                                  "options": "WiFi Multi\nWiFi Manager",
+                                  "options": "WiFi\nBluetooth\nWiFi + Bluetooth",
                                   "optionsType": "literal",
                                   "selected": 0,
                                   "selectedType": "literal",

@@ -1,14 +1,14 @@
 #include "xpt2046_lvgl9.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
+#include "esp_rom_sys.h" // Para esp_rom_delay_us
 #include <string.h>
 
-static const char *TAG = "XPT2046";
+// static const char *TAG = "XPT2046";
 
 static spi_device_handle_t touch_spi_handle;
 static int touch_irq_pin;
 
-// COMANDOS INTERCAMBIADOS (Corrección Diagonal)
 #define CMD_X_READ  0xD0
 #define CMD_Y_READ  0x90
 
@@ -54,25 +54,33 @@ long map(long x, long in_min, long in_max, long out_min, long out_max) {
 
 void xpt2046_read_cb_lvgl9(lv_indev_t * indev, lv_indev_data_t * data)
 {
-    int32_t avg_x = 0;
-    int32_t avg_y = 0;
-    int32_t intraw_x = 0;
-    int32_t intraw_y = 0;
-    const int samples = 4;
-
+    // 1. LECTURA INICIAL
     if (gpio_get_level(touch_irq_pin) == 0) {
+        
+        // --- ANTI-REBOTE (DEBOUNCE) ---
+        // El ruido eléctrico suele durar microsegundos. Un toque humano dura milisegundos.
+        // Esperamos 5ms y verificamos si sigue presionado.
+        esp_rom_delay_us(5000); 
+        
+        if (gpio_get_level(touch_irq_pin) != 0) {
+            // Falsa alarma (era ruido), salimos indicando que no hay toque
+            data->state = LV_INDEV_STATE_RELEASED;
+            return;
+        }
+        // ------------------------------
+
+        int32_t avg_x = 0;
+        int32_t avg_y = 0;
+        const int samples = 4;
+
         for (int i = 0; i < samples; i++) {
             avg_x += spi_transfer_cmd(CMD_X_READ);
             avg_y += spi_transfer_cmd(CMD_Y_READ);
         }
-        intraw_x = avg_x / samples;
-        intraw_y = avg_y / samples;
+        
+        int32_t cal_x = map(avg_x / samples, 200, 3900, 0, 480);
+        int32_t cal_y = map(avg_y / samples, 240, 3800, 0, 272);
 
-        // CALIBRACIÓN NORMAL
-        int32_t cal_x = map(intraw_x, 200, 3900, 0, 480);
-        int32_t cal_y = map(intraw_y, 240, 3800, 0, 272);
-
-        // Clamping
         if (cal_x < 0) cal_x = 0;
         if (cal_x > 479) cal_x = 479;
         if (cal_y < 0) cal_y = 0;

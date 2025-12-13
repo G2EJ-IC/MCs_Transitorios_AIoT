@@ -8,7 +8,8 @@
 // COMPONENTES
 #include "Configuracion_AIoT.h"
 #include "WiFi_AIoT.h"
-#include "System_Control_AIoT.h"
+#include "IO_AIoT.h"
+#include "Bluetooth_AIoT.h" // <--- NUEVO INCLUDE
 #include "ui.h" 
 #include "lvgl.h"
 
@@ -26,36 +27,37 @@ void app_main(void)
         ret = nvs_flash_init();
     }
     
-    // Inicializar Hardware
+    // Inicializar Hardware General
     if (Configuracion_AIoT_Init() != ESP_OK) return;
-    sys_control_aiot_init();
-    wifi_init_sta();
+    
+    IO_AIoT_Init();        // Pantalla y Energía
+    Bluetooth_AIoT_Init(); // <--- NUEVO: Inicializar pila Bluetooth
+    wifi_init_sta();       // WiFi
+    
     ui_init(); 
     
-    // --- SOLUCIÓN AL REINICIO ---
-    // Registramos esta tarea en el Watchdog para poder alimentarlo
     esp_task_wdt_add(NULL);
 
     for (;;) {
-        // 1. LVGL (Gráficos)
+        // 1. LVGL
         uint32_t time_until_next = lv_timer_handler();
         
         // 2. EEZ Flow
         ui_tick();
         
-        // 3. Lógica (Reloj + Slider)
+        // 3. Lógica UI (Reloj, Wifi, Slider)
         ui_update_periodic_task();
         
-        // 4. ALIMENTAR AL PERRO (Evita el reinicio)
+        // 4. Watchdog
         esp_task_wdt_reset();
 
-        // 5. Delay Inteligente (Evita saturar la CPU)
-        // Si LVGL dice "espera 500ms", nosotros esperamos máximo 10ms
-        // para mantener el sistema fluido y responder al touch.
+        // 5. Delay Inteligente
         if (time_until_next > 10) time_until_next = 10;
         if (time_until_next < 1) time_until_next = 1;
 
-        sys_control_aiot_manage_sleep();
+        // 6. GESTOR DE ENERGÍA
+        IO_Task_Manager();
+
         vTaskDelay(pdMS_TO_TICKS(time_until_next));
     }
 }
